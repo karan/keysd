@@ -20,7 +20,7 @@ func (s *service) KeyExport(ctx context.Context, req *KeyExportRequest) (*KeyExp
 		typ = SaltpackExportType
 	}
 
-	if _, err := s.auth.verifyPassword(req.Password); err != nil {
+	if _, err := s.auth.unlockWithPassword(req.Password, false); err != nil {
 		if err == keyring.ErrInvalidAuth {
 			return nil, errors.Errorf("invalid password")
 		}

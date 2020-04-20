@@ -19,19 +19,19 @@ func TestAuth(t *testing.T) {
 	kr := auth.keyring
 
 	// Setup needed
-	authed, err := kr.Authed()
+	authed, err := kr.IsSetup()
 	require.NoError(t, err)
 	require.False(t, authed)
 
 	// Unlock (setup)
-	_, _, err = auth.unlock("password123", "test")
+	_, _, err = auth.unlock("password123", "test", true)
 	require.NoError(t, err)
 
-	authed2, err := kr.Authed()
+	authed2, err := kr.IsSetup()
 	require.NoError(t, err)
 	require.True(t, authed2)
 
-	token, _, err := auth.unlock("password123", "test")
+	token, _, err := auth.unlock("password123", "test", false)
 	require.NoError(t, err)
 	require.NotEmpty(t, auth.tokens)
 	require.NotEmpty(t, token)
@@ -41,7 +41,7 @@ func TestAuth(t *testing.T) {
 	require.NoError(t, err)
 
 	// Unlock with invalid password
-	_, _, err = auth.unlock("invalidpassword", "test")
+	_, _, err = auth.unlock("invalidpassword", "test", false)
 	require.EqualError(t, err, "rpc error: code = PermissionDenied desc = invalid password")
 	require.Empty(t, auth.tokens)
 	require.Empty(t, auth.tokens)
@@ -72,8 +72,8 @@ func TestAuthorize(t *testing.T) {
 	err = auth.authorize(ctx3, "/service.Keys/SomeMethod")
 	require.EqualError(t, err, "rpc error: code = PermissionDenied desc = invalid token")
 
-	// Unlock
-	token, _, err := auth.unlock("password123", "test")
+	// Unlock (setup)
+	token, _, err := auth.unlock("password123", "test", true)
 	require.NoError(t, err)
 	require.NotEmpty(t, auth.tokens)
 	require.NotEmpty(t, token)

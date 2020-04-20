@@ -65,24 +65,30 @@ func (a *auth) lock() error {
 	return nil
 }
 
-func (a *auth) verifyPassword(password string) (keyring.Auth, error) {
+func (a *auth) unlockWithPassword(password string, setup bool) (keyring.Auth, error) {
 	salt, err := a.keyring.Salt()
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to load salt")
 	}
-	auth, err := keyring.NewPasswordAuth(password, salt)
+	auth, err := keyring.NewPasswordAuth("keys.pub", password, salt)
 	if err != nil {
 		return nil, err
 	}
-	if err := a.keyring.Unlock(auth); err != nil {
-		return nil, err
+	if setup {
+		if err := a.keyring.Setup(auth); err != nil {
+			return nil, err
+		}
+	} else {
+		if err := a.keyring.Unlock(auth); err != nil {
+			return nil, err
+		}
 	}
 	return auth, nil
 }
 
-func (a *auth) unlock(password string, client string) (string, keyring.Auth, error) {
+func (a *auth) unlock(password string, client string, setup bool) (string, keyring.Auth, error) {
 	logger.Infof("Unlock")
-	auth, err := a.verifyPassword(password)
+	auth, err := a.unlockWithPassword(password, setup)
 	if err != nil {
 		if err == keyring.ErrInvalidAuth {
 			return "", nil, status.Error(codes.PermissionDenied, "invalid password")
@@ -164,7 +170,7 @@ func (a clientAuth) RequireTransportSecurity() bool {
 
 func (s *service) isAuthSetupNeeded() (bool, error) {
 	kr := s.ks.Keyring()
-	authed, err := kr.Authed()
+	authed, err := kr.IsSetup()
 	if err != nil {
 		return false, err
 	}
@@ -182,7 +188,7 @@ func (s *service) AuthSetup(ctx context.Context, req *AuthSetupRequest) (*AuthSe
 		return nil, errors.Errorf("auth already setup")
 	}
 
-	token, auth, err := s.auth.unlock(req.Password, req.Client)
+	token, auth, err := s.auth.unlock(req.Password, req.Client, true)
 	if err != nil {
 		return nil, err
 	}
@@ -226,7 +232,7 @@ func (s *service) AuthUnlock(ctx context.Context, req *AuthUnlockRequest) (*Auth
 		return nil, errors.Errorf("auth setup needed")
 	}
 
-	token, auth, err := s.auth.unlock(req.Password, req.Client)
+	token, auth, err := s.auth.unlock(req.Password, req.Client, false)
 	if err != nil {
 		return nil, err
 	}

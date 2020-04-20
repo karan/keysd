@@ -12,7 +12,7 @@ func (s *service) RuntimeStatus(ctx context.Context, req *RuntimeStatusRequest) 
 		logger.Errorf("Failed to get current executable path: %s", exeErr)
 	}
 	kr := s.ks.Keyring()
-	authed, authedErr := kr.Authed()
+	authed, authedErr := kr.IsSetup()
 	if authedErr != nil {
 		return nil, authedErr
 	}
