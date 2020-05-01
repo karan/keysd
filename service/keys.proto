@@ -75,6 +75,9 @@ service Keys {
 
   rpc Pull(PullRequest) returns (PullResponse) {}
   rpc Push(PushRequest) returns (PushResponse) {}
+
+  rpc BackupExport(BackupExportRequest) returns (BackupExportResponse) {}
+  rpc BackupImport(BackupImportRequest) returns (BackupImportResponse) {}
   
   rpc Wormhole(stream WormholeInput) returns (stream WormholeOutput) {}  
 
@@ -700,6 +703,20 @@ message PushResponse {
   string kid = 1 [(gogoproto.customname) = "KID"];
   repeated string urls = 2 [(gogoproto.customname) = "URLs"];
 }
+
+message BackupExportRequest {
+  string uri = 1 [(gogoproto.customname) = "URI"];
+  string password = 2;
+}
+message BackupExportResponse {
+  string uri = 1 [(gogoproto.customname) = "URI"];
+}
+
+message BackupImportRequest {
+  string uri = 1 [(gogoproto.customname) = "URI"];
+  string password = 2;
+}
+message BackupImportResponse {}
 
 message Collection {
   string path = 1;

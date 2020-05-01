@@ -168,6 +168,9 @@ github.com/keys-pub/keys v0.0.0-20200429174935-3fcbd4852368 h1:7hL2PbWYO1foqxA4P
 github.com/keys-pub/keys v0.0.0-20200429174935-3fcbd4852368/go.mod h1:K0JoWRBSAgH50/fJpI+6yPgYTj2TCOncJhSVixAa0Xo=
 github.com/keys-pub/keys v0.0.0-20200430211548-6fb40415e189 h1:Ecd2ChhmwEI8FUrV5c7AmgPEvQ7oB3vFU+KEzsbSJx0=
 github.com/keys-pub/keys v0.0.0-20200430211548-6fb40415e189/go.mod h1:K0JoWRBSAgH50/fJpI+6yPgYTj2TCOncJhSVixAa0Xo=
+github.com/keys-pub/keys v0.0.0-20200430215102-d492a5d3f5d5 h1:fiu/JnC8fns3c4vlXO/nie9/5mFp2N9KtXOt5OcmnZ0=
+github.com/keys-pub/keys v0.0.0-20200501212004-36356e772508 h1:h2kmUHvhkoP//lXWdbCElRY0ueydTkE8DDy5H1hXSLY=
+github.com/keys-pub/keys v0.0.0-20200501212004-36356e772508/go.mod h1:K0JoWRBSAgH50/fJpI+6yPgYTj2TCOncJhSVixAa0Xo=
 github.com/keys-pub/keysd v0.0.36 h1:LJ4icoup2ihQg9gSGCxtoYKem5jzPigf9VB777fuFTc=
 github.com/keys-pub/keysd v0.0.37-0.20200426184731-707482381542 h1:vKMSbOUlwy38UkH3u27LFwgh4c6McA0RJkh3bKBOjlw=
 github.com/keys-pub/keysd v0.0.37 h1:Qx3Dhav0FMpJZGmSCbTcqHFMP6/q37arpdYBzbgseyA=
